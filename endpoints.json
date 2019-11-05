@@ -1,0 +1,71 @@
+[
+    {
+        "endpoint": "/product-meta/department",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        },
+        "response":[
+            "electronics",
+            "toys",
+            "clothing",
+            "furniture",
+            "sports"
+        ]
+    },
+    {
+        "endpoint": "/product-meta/category?department=electronics",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        },
+        "response":[
+            "cellphone",
+            "tv",
+            "tablet",
+            "laptop"
+        ]
+    },
+    {
+        "endpoint": "/product?limit=10&offset=100",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        }
+    },
+    {
+        "endpoint": "/product?department=electronics&limit=10&offset=100",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        }
+    },
+    {
+        "endpoint": "/product?department=electronics&page=10",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        }
+    },
+    {
+        "endpoint": "/product?category=tv&limit=10&offset=100",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        }
+    },
+    {
+        "endpoint": "/product?category=tv&page=10",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        }
+    },
+    {
+        "endpoint": "/product?id=5db900a11ce391383431cfde",
+        "method":"get",
+        "header":{
+            "project":"cs6400"
+        }
+    }
+]
