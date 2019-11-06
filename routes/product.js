@@ -1,7 +1,17 @@
 const express = require('express');
 const productRouter = express.Router();
 const productDBOp = require('../services/product');
-
+function toInt(number){
+    let t = parseInt(number);
+    if(isNaN(t)){
+        return null;
+    }
+    if(t.toString() == number){
+        return t;
+    }else{
+        return null;
+    }
+}
 function verifyQuery(qry){
     // only id.
     if(qry.id != null && qry.department == null && qry.category == null && 
@@ -14,6 +24,31 @@ function verifyQuery(qry){
     }
     if(qry.page != null && (qry.limit != null || qry.offset != null)){
         return false;
+    }
+    
+    if(qry.page != null){
+        let temp = toInt(qry.page);
+        if(temp == null){
+            return false;
+        }else{
+            qry.page = temp;
+        }
+    }
+    if(qry.limit != null){
+        let temp = toInt(qry.limit);
+        if(temp == null){
+            return false;
+        }else{
+            qry.limit = temp;
+        }
+    }
+    if(qry.offset != null){
+        let temp = toInt(qry.offset);
+        if(temp == null){
+            return false;
+        }else{
+            qry.offset = temp;
+        }
     }
     return true;
 }

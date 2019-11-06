@@ -1,17 +1,31 @@
 const productDB = require('../db_models/product');
 
 function queryAllDepartments(callback){
-    productDB.find({}, {}, {limit:20}).lean().exec((err, departments) => {
-        console.log(err);
-        console.log(departments);
-        callback(new Error("not implemented !"));
+    productDB.distinct('department').lean().exec((err, departments) => {
+        if(err != null){
+            callback(err);
+        }else{
+            callback(null, departments == null? []: departments);
+        }
     });
 }
 function queryCategoriesByDepartment(department, callback){
-    callback(new Error("not implemented !"));
+    productDB.distinct('category', {department: department}).lean().exec((err, categories) => {
+        if(err != null){
+            callback(err);
+        }else{
+            callback(null, categories == null? []: categories);
+        }
+    });
 }
 function queryAllCategories(callback){
-    callback(new Error("not implemented !"));
+    productDB.distinct('category').lean().exec((err, categories) => {
+        if(err != null){
+            callback(err);
+        }else{
+            callback(null, categories == null? []: categories);
+        }
+    });
 }
 
 module.exports.queryAllDepartments = queryAllDepartments;
