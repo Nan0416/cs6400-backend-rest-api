@@ -4,16 +4,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 
+const config = require('./config');
+
 mongoose.Promise = bluebird;
 mongoose.set('useCreateIndex', true)
 mongoose.set('useNewUrlParser', true);
 //mongoose.set('debug', true);
 
-const config = {
-    "mongodb_url": "mongodb://qinnan.dev:27017/cs6400_project",
-    "server_domain": "localhost",
-    "server_port":9000,
-}
+
 
 const connect = mongoose.connect(config.mongodb_url, {});
 
