@@ -1,7 +1,11 @@
 const productDB = require('../db_models/product');
 
 function queryAllDepartments(callback){
-    callback(new Error("not implemented !"));
+    productDB.find({}, {}, {limit:20}).lean().exec((err, departments) => {
+        console.log(err);
+        console.log(departments);
+        callback(new Error("not implemented !"));
+    });
 }
 function queryCategoriesByDepartment(department, callback){
     callback(new Error("not implemented !"));

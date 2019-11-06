@@ -46,9 +46,10 @@ const Product = new Schema({
 },{
     //updatedAt and createdAt: (ISODate object)
     timestamps: true,
-    usePushEach:true
+    usePushEach:true,
+    collection: "walmart_products"
 });
 
 Product.index({id: 1});
-const product = mongoose.model("walmart_products", Product);
+const product = mongoose.model("walmart_product", Product);
 module.exports = product;

@@ -14,11 +14,11 @@ function handler(res, next){
 }
 
 
-metaRouter.route("/department")
+metaRouter.route("/departments")
 .get((req, res, next)=>{
     productMetaDBOp.queryAllDepartments(handler(res, next));
 })
-metaRouter.route("/category")
+metaRouter.route("/categories")
 .get((req, res, next)=>{
     let department = req.query.department;
     if(department != null){

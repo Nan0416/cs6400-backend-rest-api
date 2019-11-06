@@ -40,7 +40,15 @@ productRouter.route("/")
     }
     
     if(req.query.id != null){
-        productDBOp.queryProductById(req.query.id, handler(res, next));
+        productDBOp.queryProductById(req.query.id, (err, product)=>{
+            if(err != null){
+                next(err);
+            }else if(product == null){
+                res.status(404).json({success: false, reasons: `cannot find ${req.query.id} product.`});
+            }else{
+                res.status(200).json(product);
+            }
+        });
 
     }else if(req.query.category != null){
         productDBOp.queryProductsByCategory(req.query.category, req.query, handler(res, next));
