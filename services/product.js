@@ -7,10 +7,17 @@ const page_size = regular_limit;
 function getOption(option){
     option_ = {sort: {_id:1}};
     if(option.limit != null){
-        option.limit = 
-        option_['limit'] = option.limit > max_limit? max_limit: option.limit;
-        option_['skip'] = option.offset == null? 0: option.offset;
-    }else if(option.page != null){
+        if(option.limit <= 0){
+            option.limit = regular_limit;
+        }else if(option.limit > max_limit){
+            option.limit = max_limit;
+        }
+        if(option.offset == null || option.offset < 0){
+            option.offset = 0;
+        }
+        option_['limit'] = option.limit;
+        option_['skip'] = option.offset;
+    }else if(option.page != null && option.page >= 1){
         option_['skip'] = (option.page - 1) * page_size;
         option_['limit'] = page_size;
     }else{

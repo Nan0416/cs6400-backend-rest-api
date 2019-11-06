@@ -10,7 +10,7 @@ mongoose.set('useNewUrlParser', true);
 //mongoose.set('debug', true);
 
 const config = {
-    "mongodb_url": "mongodb://localhost:27017/cs6400_project",
+    "mongodb_url": "mongodb://qinnan.dev:27017/cs6400_project",
     "server_domain": "localhost",
     "server_port":9000,
 }
@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 //////////////////////////////////////////////////////////////////////////////////////////////
 function launchServer(app, port, domain){
     // user and account
-    let urlprefix = ""
+    let urlprefix = "/api/v1.0"
     app.use(urlprefix + '/product', productRoute);
     app.use(urlprefix + '/product-meta', productMetaRoute);
     app.use((req, res, next) => {
