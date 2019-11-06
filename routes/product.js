@@ -1,12 +1,12 @@
 const express = require('express');
 const productRouter = express.Router();
 const productDBOp = require('../services/product');
-function toInt(number){
+function toNonNegativeInt(number){
     let t = parseInt(number);
     if(isNaN(t)){
         return null;
     }
-    if(t.toString() == number){
+    if(t.toString() == number && t >= 0){
         return t;
     }else{
         return null;
@@ -27,7 +27,7 @@ function verifyQuery(qry){
     }
     
     if(qry.page != null){
-        let temp = toInt(qry.page);
+        let temp = toNonNegativeInt(qry.page);
         if(temp == null){
             return false;
         }else{
@@ -35,7 +35,7 @@ function verifyQuery(qry){
         }
     }
     if(qry.limit != null){
-        let temp = toInt(qry.limit);
+        let temp = toNonNegativeInt(qry.limit);
         if(temp == null){
             return false;
         }else{
@@ -43,7 +43,7 @@ function verifyQuery(qry){
         }
     }
     if(qry.offset != null){
-        let temp = toInt(qry.offset);
+        let temp = toNonNegativeInt(qry.offset);
         if(temp == null){
             return false;
         }else{
