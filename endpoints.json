@@ -1,10 +1,31 @@
 [
     {
+        "endpoint": "/user/signup",
+        "method":"post",
+        "body":{
+            "username":"example-user",
+            "password":"example-password"
+        },
+        "response":{
+            "success": true,
+            "token":"a-jwt-token"
+        }
+    },
+    {
+        "endpoint": "/user/login",
+        "method":"post",
+        "body":{
+            "username":"example-user",
+            "password":"example-password"
+        },
+        "response":{
+            "success": true,
+            "token":"a-jwt-token"
+        }
+    },
+    {
         "endpoint": "/product-meta/department",
         "method":"get",
-        "header":{
-            "project":"cs6400"
-        },
         "response":[
             "electronics",
             "toys",
@@ -16,9 +37,6 @@
     {
         "endpoint": "/product-meta/category?department=electronics",
         "method":"get",
-        "header":{
-            "project":"cs6400"
-        },
         "response":[
             "cellphone",
             "tv",
@@ -28,44 +46,26 @@
     },
     {
         "endpoint": "/product?limit=10&offset=100",
-        "method":"get",
-        "header":{
-            "project":"cs6400"
-        }
+        "method":"get"
     },
     {
         "endpoint": "/product?department=electronics&limit=10&offset=100",
-        "method":"get",
-        "header":{
-            "project":"cs6400"
-        }
+        "method":"get"
     },
     {
         "endpoint": "/product?department=electronics&page=10",
-        "method":"get",
-        "header":{
-            "project":"cs6400"
-        }
+        "method":"get"
     },
     {
         "endpoint": "/product?category=tv&limit=10&offset=100",
-        "method":"get",
-        "header":{
-            "project":"cs6400"
-        }
+        "method":"get"
     },
     {
         "endpoint": "/product?category=tv&page=10",
-        "method":"get",
-        "header":{
-            "project":"cs6400"
-        }
+        "method":"get"
     },
     {
         "endpoint": "/product?id=58ICH8JAK2RC",
-        "method":"get",
-        "header":{
-            "project":"cs6400"
-        }
+        "method":"get"
     }
 ]
