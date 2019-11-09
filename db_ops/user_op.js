@@ -163,9 +163,20 @@ function find_user(user, callback){
     });
 }
 
+function drop_user_collection(callback){
+    userDB.remove({}, (err, _)=>{
+        if(err != null){
+            err.statusCode = 500;
+            callback(err);
+        }else{
+            callback(null, {success: true});
+        }
+    })
+}
 
 module.exports.register_user = register_user;
 module.exports.verify_user = verify_user;
 module.exports.find_user = find_user;
 module.exports.reset_password_with_secret = reset_password_with_secret;
 module.exports.reset_password_generate_secret = reset_password_generate_secret;
+module.exports.drop_user_collection = drop_user_collection;

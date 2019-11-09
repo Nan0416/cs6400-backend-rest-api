@@ -20,6 +20,7 @@ const productRoute = require('./routes/product');
 const productMetaRoute = require('./routes/productmeta');
 const userSignupRoute = require('./routes/signup');
 const userLoginRoute = require('./routes/login');
+const userDropRoute = require('./routes/remove_user');
 ///////// Express middleware //////////
 
 const app = express();
@@ -40,6 +41,7 @@ function launchServer(app, port, domain){
     app.use(urlprefix + '/product-meta', productMetaRoute);
     app.use(urlprefix + '/user/login', userLoginRoute);
     app.use(urlprefix + '/user/signup', userSignupRoute);
+    app.use(urlprefix + '/user', userDropRoute);
     app.use((req, res, next) => {
         res.status(404).send('Your request is not supported currently.')
     })
