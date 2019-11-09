@@ -164,7 +164,7 @@ function find_user(user, callback){
 }
 
 function drop_user_collection(callback){
-    userDB.remove({}, (err, _)=>{
+    userDB.deleteMany({}, (err, _)=>{
         if(err != null){
             err.statusCode = 500;
             callback(err);
