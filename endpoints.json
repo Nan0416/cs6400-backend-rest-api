@@ -62,7 +62,7 @@
         }
     },
     {
-        "endpoint": "/product?id=5db900a11ce391383431cfde",
+        "endpoint": "/product?id=58ICH8JAK2RC",
         "method":"get",
         "header":{
             "project":"cs6400"

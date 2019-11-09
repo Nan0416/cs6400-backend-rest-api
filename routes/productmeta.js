@@ -1,7 +1,7 @@
 const express = require('express');
 const metaRouter = express.Router();
 
-const productMetaDBOp = require('../services/productmeta');
+const productMetaDBOp = require('../db_ops/productmeta');
 
 function handler(res, next){
     return (err, result)=>{

@@ -1,6 +1,6 @@
 const express = require('express');
 const productRouter = express.Router();
-const productDBOp = require('../services/product');
+const productDBOp = require('../db_ops/product');
 function toNonNegativeInt(number){
     let t = parseInt(number);
     if(isNaN(t)){

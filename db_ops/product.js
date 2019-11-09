@@ -31,13 +31,13 @@ function getOption(option){
 }
 
 function queryProductById(id, callback){
-    productDB.find({id: id}).lean().exec((err, departments) => {
+    productDB.findOne({id: id}).lean().exec((err, department) => {
         if(err != null){
             callback(err);
-        }else if(departments == null || departments.length == 0){
+        }else if(department == null){
             callback(null, null);
         }else{
-            callback(null, departments[0]);
+            callback(null, department);
         }
     });
 }
