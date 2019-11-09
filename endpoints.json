@@ -24,6 +24,13 @@
         }
     },
     {
+        "endpoint":"/user",
+        "method":"delete",
+        "response":{
+            "success":true
+        }
+    },
+    {
         "endpoint": "/product-meta/department",
         "method":"get",
         "response":[
