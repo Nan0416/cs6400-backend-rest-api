@@ -19,10 +19,11 @@ module.exports.server_config = {
     port: 8101
 };
 
-
+const db_server = "localhost";
 module.exports.db_config = {
-    connection_string: "mongodb://localhost:27017/cs6400_project"
+    connection_string: `postgres://nan:12345@${db_server}:5432/cs6400_project`
 };
+
 
 module.exports.secret_config = {
     salt_rounds: 10,

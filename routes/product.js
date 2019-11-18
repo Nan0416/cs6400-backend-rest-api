@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const productRouter = express.Router();
 const productDBOp = require('../db_ops/product');
 function toNonNegativeInt(number){
@@ -93,4 +93,4 @@ productRouter.route("/")
         productDBOp.queryProducts(req.query, handler(res, next));
     }
 });
-module.exports = productRouter;
+module.exports = productRouter;*/

@@ -23,13 +23,11 @@
             "token":"a-jwt-token"
         }
     },
-    {
-        "endpoint":"/user",
-        "method":"delete",
-        "response":{
-            "success":true
-        }
-    },
+
+
+
+
+    
     {
         "endpoint": "/product-meta/department",
         "method":"get",
