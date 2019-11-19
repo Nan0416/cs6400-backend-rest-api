@@ -6,7 +6,7 @@ const server_config = require('./config').server_config;
 //const productMetaRoute = require('./routes/productmeta');
 const userSignupRoute = require('./routes/signup');
 const userLoginRoute = require('./routes/login');
-//const userDropRoute = require('./routes/remove_user');
+const reviewRoute = require('./routes/review');
 ///////// Express middleware //////////
 
 const app = express();
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 function launchServer(app, port, domain){
     // user and account
     let urlprefix = "/api/v2.0"
-    //app.use(urlprefix + '/product', productRoute);
+    app.use(urlprefix + '/recommendation/review', reviewRoute);
     //app.use(urlprefix + '/product-meta', productMetaRoute);
     app.use(urlprefix + '/user/login', userLoginRoute);
     app.use(urlprefix + '/user/signup', userSignupRoute);

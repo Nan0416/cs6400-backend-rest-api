@@ -31,7 +31,7 @@ module.exports.secret_config = {
 };
 
 module.exports.cors_config = {
-    whitelist: [],
+    whitelist: ["http://localhost:4200"],
 };
 
 module.exports.token_config = {

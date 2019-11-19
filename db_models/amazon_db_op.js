@@ -5,17 +5,43 @@ class AmazonDBOps{
         this.db = db;
     }
 
-    queryReviewByUserId(uid, fields = ["user_id", "product_asin", "rating"]){
-        return this.db.review.findAll({
+    queryReviewByReviewerId(reviewerId, offset, limit, fields = ["review_id", "product_asin", "rating"]){
+        return this.db.review2.findAll({
             attributes: fields,
             where:{
-                user_id: uid
-            }   
+                review_id: reviewerId
+            },
+            offset: offset, 
+            limit: limit
         })
         .then(reviews =>{
             let reviews_ = [];
             for(let i = 0; i < reviews.length; i++){
-                reviews_.push(reviews[i].dataValues);
+                reviews_.push({
+                    reviewer_id: reviews[i].dataValues.review_id,
+                    product_asin: reviews[i].dataValues.product_asin,
+                    rating: reviews[i].dataValues.rating
+                });
+            }
+            return new Promise((resolve, reject)=>{
+                resolve(reviews_);
+            });
+        });
+    }
+    queryReview(offset, limit, fields = ["review_id", "product_asin", "rating"]){
+        return this.db.review2.findAll({
+            attributes: fields,
+            offset: offset, 
+            limit: limit
+        })
+        .then(reviews =>{
+            let reviews_ = [];
+            for(let i = 0; i < reviews.length; i++){
+                reviews_.push({
+                    reviewer_id: reviews[i].dataValues.review_id,
+                    product_asin: reviews[i].dataValues.product_asin,
+                    rating: reviews[i].dataValues.rating
+                });
             }
             return new Promise((resolve, reject)=>{
                 resolve(reviews_);
