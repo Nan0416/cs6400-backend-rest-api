@@ -16,7 +16,7 @@ module.exports.valid_clients = valid_clients;
 
 module.exports.server_config = {
     domain: "localhost",
-    port: 8101
+    port: 8102
 };
 
 const db_server = "localhost";
