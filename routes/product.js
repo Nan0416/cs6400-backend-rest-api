@@ -1,96 +1,32 @@
-/*const express = require('express');
+const express = require('express');
 const productRouter = express.Router();
-const productDBOp = require('../db_ops/product');
-function toNonNegativeInt(number){
-    let t = parseInt(number);
-    if(isNaN(t)){
-        return null;
-    }
-    if(t.toString() == number && t >= 0){
-        return t;
-    }else{
-        return null;
-    }
-}
-function verifyQuery(qry){
-    // only id.
-    if(qry.id != null && qry.department == null && qry.category == null && 
-        qry.offset == null && qry.limit == null && qry.page == null){
-        return true;
-    }
-    // not both department and category.
-    if(qry.department != null && qry.category != null){
-        return false;
-    }
-    if(qry.page != null && (qry.limit != null || qry.offset != null)){
-        return false;
-    }
-    
-    if(qry.page != null){
-        let temp = toNonNegativeInt(qry.page);
-        if(temp == null){
-            return false;
-        }else{
-            qry.page = temp;
-        }
-    }
-    if(qry.limit != null){
-        let temp = toNonNegativeInt(qry.limit);
-        if(temp == null){
-            return false;
-        }else{
-            qry.limit = temp;
-        }
-    }
-    if(qry.offset != null){
-        let temp = toNonNegativeInt(qry.offset);
-        if(temp == null){
-            return false;
-        }else{
-            qry.offset = temp;
-        }
-    }
-    return true;
-}
-
-function handler(res, next){
-    return (err, result)=>{
-        if(err != null){
-            next(err);
-        }else{
-            res.status(200).json(result);
-        }
-    }
-}
+const dbOp = require('../db_models/amazon_db_instance').dbOp;
+const cors = require('../middlware/cors');
 
 productRouter.route("/")
-.get((req, res, next)=>{
-    if(!verifyQuery(req.query)){
+.get(cors.cors_allow_whitelist, (req, res, next)=>{
+    if(req.query.id == null){
         res.statusCode = 400;
         res.json({
             success: false,
-            reasons: "bad request parameters. please check valid endpoints.",
+            reason:"bad query request."
         });
         return;
     }
-    
-    if(req.query.id != null){
-        productDBOp.queryProductById(req.query.id, (err, product)=>{
-            if(err != null){
-                next(err);
-            }else if(product == null){
-                res.status(404).json({success: false, reasons: `cannot find ${req.query.id} product.`});
-            }else{
-                res.status(200).json(product);
-            }
-        });
+    dbOp.queryProductById(req.query.id)
+    .then(product => {
+        res.statusCode = 200;
+        res.json({success: true, product: product});
+    })
+    .catch(err => {
+        if(err.message == "not found"){
+            res.statusCode = 404;
+            res.json({success: false, reason: "product not found"});
+        }else{
+            res.statusCode = 500;
+            res.json({success: false, reason: err.message});
+        }
+    })
 
-    }else if(req.query.category != null){
-        productDBOp.queryProductsByCategory(req.query.category, req.query, handler(res, next));
-    }else if(req.query.deparment != null){
-        productDBOp.queryProductsByDepartment(req.query.deparment, req.query, handler(res, next));
-    }else{
-        productDBOp.queryProducts(req.query, handler(res, next));
-    }
 });
-module.exports = productRouter;*/
+module.exports = productRouter;

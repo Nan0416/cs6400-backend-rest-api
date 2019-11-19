@@ -2,7 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const server_config = require('./config').server_config;
-//const productRoute = require('./routes/product');
+const productRoute = require('./routes/product');
 //const productMetaRoute = require('./routes/productmeta');
 const userSignupRoute = require('./routes/signup');
 const userLoginRoute = require('./routes/login');
@@ -24,7 +24,7 @@ function launchServer(app, port, domain){
     // user and account
     let urlprefix = "/api/v2.0"
     app.use(urlprefix + '/recommendation/review', reviewRoute);
-    //app.use(urlprefix + '/product-meta', productMetaRoute);
+    app.use(urlprefix + '/product', productRoute);
     app.use(urlprefix + '/user/login', userLoginRoute);
     app.use(urlprefix + '/user/signup', userSignupRoute);
     //app.use(urlprefix + '/user', userDropRoute);
