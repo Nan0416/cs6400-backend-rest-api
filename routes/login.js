@@ -13,14 +13,14 @@ login_router.route("/")
     res.sendStatus(200);
 })
 .post(cors.cors_allow_whitelist, (req, res, next)=>{
-    let username = get_value(req.body, 'username');
+    let id = get_value(req.body, 'id');
     let password = get_value(req.body, 'password');
-    if(password == null || username == null){
+    if(password == null || id == null){
         res.statusCode = 400; // bad request;
         res.json({success: false, reason: "missing fields."});
         return;
     }
-    dbOp.queryUserByUsername(username, ['id', 'username', 'hash_password'])
+    dbOp.queryUserById(id, ['id', 'username', 'hash_password'])
     .then(user => {
         bcrypt.compare(password, user.hash_password, (err, same)=>{
             if(err != null){

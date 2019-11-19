@@ -9,6 +9,8 @@ class AmazonProductDB{
      *  image: image,
      *  user: user,
      *  review: review,
+     *  user2: user2,
+     *  review2: review2,
      */
     
     constructor(connection_string){
@@ -23,29 +25,7 @@ class AmazonProductDB{
         this.init();
     }
 
-    upsert_category(category){ // return promise.
-        return this.category.findAll({
-            attributes:["id", "name"],
-            where:{name: category}
-        })
-        .then(data =>{
-            if(data.length == 0){
-                return this.category.build({name: category}).save()
-                .then(item =>{
-                    return new Promise((resolve, reject)=>{
-                        resolve(item.dataValues);
-                    });
-                })
-            }else{
-                return new Promise((resolve, reject)=>{
-                    resolve(data[0].dataValues);
-                });
-            }
-        });
-    }
-
     sync(table_names){
-        let tables = [];
         let map = new Map();
 
         map.set('product', this.product);
@@ -54,6 +34,8 @@ class AmazonProductDB{
         map.set('image', this.image);
         map.set('user', this.user);
         map.set('review', this.review);
+        map.set('user2', this.user2);
+        map.set('review2', this.review2);
 
         if(table_names == null){
             console.log("overwrite database.")
@@ -192,7 +174,64 @@ class AmazonProductDB{
         },{
             underscored: true,
         });
-    
+
+        this.user2 = this.db.define('user2', {
+            id: {
+                type: sequelize.STRING(20),
+                field:"id",
+                primaryKey: true
+            },
+            username:{
+                type: sequelize.STRING(127),
+                field:"username",
+                allowNull: false
+            },
+            hash_password:{
+                type: sequelize.CHAR(60), // using bcrypt to hash password, return a fixed 60 length hash value.
+                field:"hash_password",
+                allowNull: false
+            }
+        },{
+            timestamps: false,
+            underscored: true,
+            freezeTableName: true,
+        });
+        this.review2 = this.db.define('review2', {
+            rating:{
+                type: sequelize.DOUBLE,
+                field: 'rating',
+                allowNull: false,
+            },
+            product_asin:{
+                type: sequelize.CHAR(10),
+                field: "product_asin",
+                allowNull: false,
+                unique: 'product_user_review2_index',
+                references: {
+                    model: this.product,
+                    key: 'asin',
+                    // This declares when to check the foreign key constraint. PostgreSQL only.
+                    deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
+                }
+            },
+            reviewer_id:{
+                type: sequelize.STRING(21),
+                field:"review_id", // userid.
+                allowNull: false,
+                unique: 'product_user_review2_index',
+                references: {
+                    model: this.user2,
+                    key: 'id',
+                    // This declares when to check the foreign key constraint. PostgreSQL only.
+                    deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
+                }
+            }
+        },{
+            timestamps: false,
+            freezeTableName: true,
+            underscored: true,
+        });
+
         this.review = this.db.define('review', {
             rating:{
                 type: sequelize.DOUBLE,

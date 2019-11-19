@@ -23,11 +23,11 @@ class AmazonDBOps{
         });
     }
 
-    queryUserByUsername(username, fields = ['id', 'username']){
-        return this.db.user.findOne({
+    queryUserById(id, fields = ['id', 'username']){
+        return this.db.user2.findOne({
             attributes: fields,
             where:{
-                username: username
+                id: id
             }   
         })
         .then(user =>{
@@ -40,8 +40,9 @@ class AmazonDBOps{
             });
         });
     }
-    signupUser(username, password){
-        return this.queryUserByUsername(username)
+
+    signupUser(id, username, password){
+        return this.queryUserById(id)
         .then(_ => {
             /* user exsited */
             return new Promise((resolve, reject)=>{
@@ -64,7 +65,7 @@ class AmazonDBOps{
             });
         })
         .then(hash_password =>{
-            return this.db.user.build({username: username, hash_password: hash_password}).save()
+            return this.db.user2.build({id: id, username: username, hash_password: hash_password}).save()
             .then(item =>{
                 return new Promise((resolve, reject)=>{
                     resolve({id: item.dataValues.id, username: item.dataValues.username});

@@ -6,7 +6,7 @@ module.exports.dbOp = new AmazonDBOps(new AmazonProductDB(connection_string));
 
 
 
-/*dbOp.queryUserByUsername("Joe")
+/*dbOp.queryUserByUsername("Pranshu")
 .then(user=>{
     console.log(user)
     return dbOp.queryReviewByUserId(user.id);

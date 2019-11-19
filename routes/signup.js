@@ -12,14 +12,15 @@ signup_router.route("/")
     res.sendStatus(200);
 })
 .post(cors.cors_allow_whitelist, (req, res, next)=>{
+    let id = get_value(req.body, 'id');
     let username = get_value(req.body, 'username');
     let password = get_value(req.body, 'password');
-    if(has_null(username, password)){
+    if(has_null(id, username, password)){
         res.statusCode = 400; 
         res.json({success: false, reason: "missing fields."});
         return;
     }
-    dbOp.signupUser(username, password)
+    dbOp.signupUser(id, username, password)
     .then(user => {
         res.statusCode = 200;
         res.json({success: true, token: generate_token(user)});
