@@ -19,7 +19,7 @@ module.exports.server_config = {
     port: 8102
 };
 
-const db_server = "localhost";
+const db_server = "qinnan.dev";
 module.exports.db_config = {
     connection_string: `postgres://nan:12345@${db_server}:5432/cs6400_project`
 };
@@ -40,6 +40,9 @@ module.exports.token_config = {
     public_key: "wewjow324jdie"
 };
 
+module.exports.elasticsearch_config = {
+    domain: "http://localhost:9200"
+};
 /*module.exports.email_config = {
     domain: "mg.qinnan.dev",
     private_api_key: require('./secret_config').email_secret.private_api_key

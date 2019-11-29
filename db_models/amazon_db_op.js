@@ -4,7 +4,6 @@ class AmazonDBOps{
     constructor(db){
         this.db = db;
     }
-
     queryProductById(product_asin){
         return this.db.product.findOne({
             where:{
