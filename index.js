@@ -3,7 +3,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const server_config = require('./config').server_config;
 const productRoute = require('./routes/product');
-//const productMetaRoute = require('./routes/productmeta');
+const recommendationRoute = require('./routes/recommendation');
 const userSignupRoute = require('./routes/signup');
 const userLoginRoute = require('./routes/login');
 const reviewRoute = require('./routes/review');
@@ -24,10 +24,11 @@ function launchServer(app, port, domain){
     // user and account
     let urlprefix = "/api/v2.0"
     app.use(urlprefix + '/recommendation/review', reviewRoute);
+    app.use(urlprefix + '/recommendation/like-product', recommendationRoute);
     app.use(urlprefix + '/product', productRoute);
     app.use(urlprefix + '/user/login', userLoginRoute);
     app.use(urlprefix + '/user/signup', userSignupRoute);
-    //app.use(urlprefix + '/user', userDropRoute);
+    // app.use(urlprefix + '/user', userDropRoute);
     app.use((req, res, next) => {
         res.status(404).send('Your request is not supported currently.')
     })

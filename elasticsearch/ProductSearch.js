@@ -14,8 +14,81 @@ class ProductSearch{
             return Promise.resolve({asin: asin, response: v});
         })
     }
-    searchProduct(search_text){
 
+    queryProductById(id){
+        return this.client.search({
+            index: this.index_name,
+            _source: true,
+            body:{
+                "query": {
+                    "ids" : {
+                        "values" : [id]
+                    }
+                }
+            }
+        });
+    }
+    searchProduct(search_text, limit = 0, offset = 0){
+        return this.client.search({
+            index: this.index_name,
+            from: offset,
+            size: limit,
+            _source: true,
+            body:{
+                "query":{
+                    "dis_max":{
+                        "queries": [
+                            {
+                                "match":{
+                                    "description":{
+                                        "query": search_text,
+                                        "operator":"or",
+                                        "minimum_should_match":"50%"
+                                    }
+                                }
+                            },
+                            {
+                                "match":{
+                                    "title":{
+                                        "query": search_text,
+                                        "operator":"or",
+                                        "minimum_should_match":"90%"
+                                    }
+                                }
+                            },
+                            {
+                                "match":{
+                                    "main_cat":{
+                                        "query": search_text,
+                                        "operator":"or",
+                                        "minimum_should_match":1
+                                    }
+                                }
+                            },
+                            {
+                                "match":{
+                                    "brand":{
+                                        "query": search_text,
+                                        "operator":"or",
+                                        "minimum_should_match":1
+                                    }
+                                }
+                            },
+                            {
+                                "match":{
+                                    "categories":{
+                                        "query": search_text,
+                                        "operator":"or",
+                                        "minimum_should_match":1
+                                    }
+                                }   
+                            }
+                        ],
+                        "tie_breaker":0.9
+                    }
+                }
+            }
+        })
     }
 }
 
