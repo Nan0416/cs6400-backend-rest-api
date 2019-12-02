@@ -43,6 +43,11 @@ module.exports.token_config = {
 module.exports.elasticsearch_config = {
     domain: "http://localhost:9200"
 };
+
+module.exports.eventHub = {
+    connection_string: require('./secret').eventhub_connection_string,
+    eventhub_name: "first"
+}
 /*module.exports.email_config = {
     domain: "mg.qinnan.dev",
     private_api_key: require('./secret_config').email_secret.private_api_key

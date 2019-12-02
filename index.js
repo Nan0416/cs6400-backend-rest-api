@@ -24,7 +24,7 @@ function launchServer(app, port, domain){
     // user and account
     let urlprefix = "/api/v2.0"
     app.use(urlprefix + '/recommendation/review', reviewRoute);
-    app.use(urlprefix + '/recommendation/like-product', recommendationRoute);
+    app.use(urlprefix + '/recommendation/product', recommendationRoute);
     app.use(urlprefix + '/product', productRoute);
     app.use(urlprefix + '/user/login', userLoginRoute);
     app.use(urlprefix + '/user/signup', userSignupRoute);
