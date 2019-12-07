@@ -1,4 +1,8 @@
-
+/*const es_config = require('../config').elasticsearch_config;
+const { Client } = require('@elastic/elasticsearch');
+const ProductSearch = require('../elasticsearch/ProductSearch');
+const client = new Client({node: es_config.domain});
+const productSearch = new ProductSearch(client);*/
 
 class RecommendationHandler{
     constructor(client){
@@ -11,7 +15,8 @@ class RecommendationHandler{
             sessionid: sessionid,
             asins: product_asins
         };
-        return this.client.send({body: JSON.stringify(data)});
+        return Promise.resolve(data);
+        //return this.client.send({body: JSON.stringify(data)});
     }
 
     setupHandler(handler, error_handler){

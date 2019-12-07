@@ -15,6 +15,19 @@ class ProductSearch{
         })
     }
 
+    queryProductByIds(ids){
+        return this.client.search({
+            index: this.index_name,
+            _source: true,
+            body:{
+                "query": {
+                    "ids" : {
+                        "values" : ids
+                    }
+                }
+            }
+        });
+    }
     queryProductById(id){
         return this.client.search({
             index: this.index_name,
