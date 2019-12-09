@@ -1,5 +1,6 @@
 const express = require('express');
 const recommendation = express.Router();
+const request = require('request');
 const cors = require('../middlware/cors');
 const { EventHubClient} = require("@azure/event-hubs");
 const event_hub_config = require('../config').eventHub;
@@ -8,6 +9,9 @@ const event_hub_client = EventHubClient.createFromConnectionString(event_hub_con
 const RecommendationHandler = require('../recommendation/RecommendationHandler');
 const recommendation_handler = new RecommendationHandler(event_hub_client);
 const product_asin_to_int = require('../utilities/product_asin_to_int').product_asin_to_int;
+const product_int_to_asin = require('../utilities/product_asin_to_int').product_int_to_asin;
+
+const to_non_negative = require('../utilities/utilities').to_non_negative;
 
 
 const es_config = require('../config').elasticsearch_config;
@@ -23,9 +27,45 @@ let user_session_recommend = new Map();
 const user_num_id_base = 700000;
 let user_id_count = 0;
 
+
+
+
+
+
+
 let __mock_count = 0;
 function mockGetRecommend(session_id){
-    if(user_session_recommend.has(session_id)){
+    let value = to_non_negative(session_id);
+    if(value == null){
+        return Promise.reject(new Error(`Invalid Session ${session_id}`));
+    }
+    return new Promise((resolve, reject)=>{
+        request({
+            method: 'GET',
+            url:'http://52.188.223.237:8000',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            json:{
+                'userid': value
+            }
+        }, (err, res, body) =>{
+            if(err != null || res.statusCode != 200){
+                reject(new Error(`Invalid Session ${session_id}`));
+            }else{
+                let result = [];
+                for(let i = 0; i < body.prods.length; i++){
+                    result.push(product_int_to_asin[body.prods[i].toString()]);
+                }
+                // console.log(result);
+                // console.log(body.prods);
+                resolve(result);
+            }
+        });
+    });
+    
+
+    /*if(user_session_recommend.has(session_id)){
         return Promise.resolve(user_session_recommend.get(session_id));
     }
 
@@ -36,8 +76,19 @@ function mockGetRecommend(session_id){
         return Promise.resolve(rec);
     }else{
         return Promise.resolve([]);
-    }
+    }*/
 }
+
+
+
+
+
+
+
+
+
+
+
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
@@ -54,14 +105,14 @@ recommendation.route("/result")
     }
     mockGetRecommend(req.query.sessionid)
     .then( list => {
-        console.log("Recommend product asin : ", list);
+        //console.log("Recommend product asin : ", list);
         return productSearch.queryProductByIds(list)
         .then(v => {
             let products = [];
             _items = v.body.hits.hits;
             for(let i = 0; i < _items.length; i++){
                 products.push(_items[i]._source);
-                console.log(`find ${_items[i]._id}`);
+                // console.log(`find ${_items[i]._id}`);
             }
             return products;
         });
@@ -75,12 +126,10 @@ recommendation.route("/result")
         });
     })
     .catch(err => {
-        console.log(err);
-        res.statusCode = 200;
+        res.statusCode = 500;
         res.json({
             success: true,
-            include_data: false,
-            products: []
+            reason: err.message
         });
     })
 });
@@ -114,6 +163,8 @@ recommendation.route("/start")
             product_int_id.push(num_id);
         }
     }
+    console.log(req.body.liked_products)
+    console.log(product_int_id)
     
     user_id_count += 1;
     let user_num_id = user_num_id_base + user_id_count;
